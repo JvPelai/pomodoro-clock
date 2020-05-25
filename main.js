@@ -1,6 +1,22 @@
 const startTimer = document.querySelector('.startTimer');
 const timerDisplay = document.querySelector('#timer');
 
+//gets the session time selected value
+function seshTime(){
+    let sessionTime = document.getElementById("sessionTime");
+    let time = sessionTime.options[sessionTime.selectedIndex].value;
+    timeOptions = document.querySelectorAll("#sessionTime");
+    return time
+}
+
+//gets the break time selected value
+function brkTime(){
+    let breaktime = document.getElementById("breakTime");
+    let brk = breakTime.options[breakTime.selectedIndex].value;
+    breakTimeOptions = document.querySelectorAll("#breakTime");
+    return brk
+
+}
 const timer =  {
     seconds: 0,
     minutes: 10,
@@ -26,7 +42,7 @@ function displayTime(sec, min) {
     timerDisplay.textContent = `${minString}:${secString}`;
 }
 
-function count() {
+function count(time) {
     if (timer.minutes == 0 && timer.seconds == 0) {
         return;
     } else {
