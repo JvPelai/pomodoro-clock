@@ -1,19 +1,39 @@
 const timerDisplay = document.querySelector('#timer');
+const pauseTimer = document.querySelector('.pause');
+let timeOptions = document.querySelectorAll("#sessionTime");
 
-const btnArr = document.getElementsByTagName('button');
-const startTimer = btnArr[0];
-const pauseTimer = btnArr[1];
-const stopTimer = btnArr[2];
-
-const breakSelect = document.getElementById('breakSelect');
-let breakMin = breakSelect.value.split(':')[0];
-let breakSec = breakSelect.value.split(':')[1];
-
-let timer =  {
-    minutes: 1,
+const timer =  {
+    minutes: 0,
     seconds: 0,
     pauseSelected: false,
-};
+}
+
+
+//gets the session time selected value
+function seshTime(){
+    let sessionTime = document.getElementById("sessionTime");
+    let time = sessionTime.options[sessionTime.selectedIndex].value;
+    timeOptions = document.querySelectorAll("#sessionTime");
+    timerDisplay.textContent = time+":00";
+    return time;
+}
+
+
+for(timeOption of timeOptions){
+    timeOption.addEventListener('click',() => {
+        let time = seshTime();
+        timer.minutes = time;
+    });
+}
+
+//gets the break time selected value
+function brkTime(){
+    let breaktime = document.getElementById("breakTime");
+    let brk = breakTime.options[breakTime.selectedIndex].value;
+    breakTimeOptions = document.querySelectorAll("#breakTime");
+    return brk
+
+}
 
 startTimer.addEventListener('click', () => count());
 pauseTimer.addEventListener('click', (e) => handlePause(e));
