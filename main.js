@@ -1,35 +1,59 @@
-const startTimer = document.querySelector('.startTimer');
 const timerDisplay = document.querySelector('#timer');
 
-const timer =  {
-    seconds: 0,
-    minutes: 10,
-}
+const btnArr = document.getElementsByTagName('button');
+const startTimer = btnArr[0];
+const pauseTimer = btnArr[1];
+const stopTimer = btnArr[2];
 
-function handleTime (sec, min) {
-    console.log(timer);
-    if (sec == 0) {
-        sec = 59;
-        min--;
+const breakSelect = document.getElementById('breakSelect');
+let breakMin = breakSelect.value.split(':')[0];
+let breakSec = breakSelect.value.split(':')[1];
+
+let timer =  {
+    minutes: 1,
+    seconds: 0,
+    pauseSelected: false,
+};
+
+startTimer.addEventListener('click', () => count());
+pauseTimer.addEventListener('click', (e) => handlePause(e));
+
+function handlePause(e) {
+    let {pauseSelected} = timer;
+    if (!pauseSelected) {
+        timer.pauseSelected = true;
+        e.target.textContent = 'play';
     } else {
-        sec--;
+        timer.pauseSelected = false;
+        e.target.textContent = 'pause';
     }
 }
 
-function displayTime(sec, min) {
-    handleTime(sec, min);
+function handleTime() {
+    let {minutes, seconds} = timer;
+    if (seconds == 0) {
+        timer.seconds = 59;
+        timer.minutes--;
+    } else {
+        timer.seconds--;
+    }
+}
+
+function displayTime() {
     console.log(timer);
-    secString = (sec < 10) ? `0${sec.toString()}` : sec.toString();
-    minString = min.toString();
+    handleTime();
     console.log(timer);
-    console.log(minString + secString);
+    let {minutes, seconds} = timer;
+    let minString = minutes.toString();
+    let secString = (seconds < 10) ? `0${seconds.toString()}` : seconds.toString();
+    console.log(minString, secString);
     timerDisplay.textContent = `${minString}:${secString}`;
 }
 
 function count() {
-    if (timer.minutes == 0 && timer.seconds == 0) {
-        return;
-    } else {
-        setInterval(displayTime(timer.seconds, timer.minutes), 1000);
-    }
+    setInterval(function () {
+        if ((timer.minutes == 0 && timer.seconds == 0) ||
+        timer.pauseSelected == true) return;   
+        displayTime();
+    }, 1000);
 }

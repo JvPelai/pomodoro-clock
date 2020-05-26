@@ -5,32 +5,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title> Pomodoro clock </title>
         <link href="style.css" type="text/css" rel="stylesheet"/>
-        <script defer src="main.js"></script>
     </head>
     <body>
         <h1>Pomodoro Clock</h1>
         <div id = "display">
-            <h2>Select your settings: </h2>
+            <div class="settings-title"><h2>Select your settings: </h2></div>
             <div id = "settings">
             <div class ="selectTitle">Session time:</div> 
-            <select class = "timeselect">
+            <select id ="workSelect" class = "timeselect">
                 <option> 25:00 </option>
                 <option> 45:00 </option>
                 <option> 60:00 </option>
             </select>
             <div class = "selectTitle" style="grid-column: 2/3;grid-row: 1/1;">Break time:</div>
-            <select class = "timeselect">
+            <select id ="breakSelect" class = "timeselect">
                 <option>5:00</option>
                 <option>10:00</option>
                 <option>15:00</option>
             </select>
             </div>
             <div id = "buttons">
-            <button class="startTimer" onclick="count()">start</button>
+            <button class="startTimer">start</button>
             <button class = "pause">pause</button>
             <button class = "stop">stop</button>
             </div>
-            <div id="timer">10:00</div>
+            <div class="timer-container">
+            <div id="timer">1:00</div>
             </div>
+        <script defer src="main.js"></script>
     </body>
 </main>
