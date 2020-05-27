@@ -1,12 +1,19 @@
-const startTimer = document.querySelector('.startTimer');
 const timerDisplay = document.querySelector('#timer');
 const pauseTimer = document.querySelector('.pause');
+const startTimer = document.querySelector('.startTimer');
+const stopTimer = document.querySelector('.stop');
 let timeOptions = document.querySelectorAll("#sessionTime");
 
 const timer =  {
-    minutes: 0,
+    selectedSessionMinutes: 25,
+    selectedBreakMinutes: 5,
+    minutes: 25,
     seconds: 0,
     pauseSelected: false,
+    stopSelected: false,
+    sessionGoing: false,
+    sessionFinished: false,
+    breakGoing: false,
 }
 
 
@@ -24,6 +31,7 @@ for(timeOption of timeOptions){
     timeOption.addEventListener('click',() => {
         let time = seshTime();
         timer.minutes = time;
+        timer.selectedSessionMinutes = time;
     });
 }
 
@@ -36,18 +44,61 @@ function brkTime(){
 
 }
 
-startTimer.addEventListener('click', () => count());
+let breakTimeOptions = document.querySelectorAll("#breakTime");
+
+for(timeOption of breakTimeOptions){
+    timeOption.addEventListener('click',() => {
+        let time = brkTime();
+        timer.selectedBreakMinutes = time;
+    });
+}
+
+startTimer.addEventListener('click', () => handleStart());
 pauseTimer.addEventListener('click', (e) => handlePause(e));
+stopTimer.addEventListener('click', () => handleStop());
+
+function handleStart() {
+    if(!timer.stopSelected){
+        count();
+    } else {
+        timer.stopSelected = false;
+        count();
+        return;
+    }
+
+    if (timer.sessionFinished) {
+        timer.breakGoing = true;
+        return;
+    }
+    
+    timer.sessionGoing = true;
+
+
+}
 
 function handlePause(e) {
     let {pauseSelected} = timer;
     if (!pauseSelected) {
         timer.pauseSelected = true;
-        e.target.textContent = 'play';
+        e.target.textContent = 'Play';
+        console.log(timer.pauseSelected);
     } else {
         timer.pauseSelected = false;
-        e.target.textContent = 'pause';
+        e.target.textContent = 'Pause';
+        count();
     }
+}
+
+function handleStop() {
+    let {stopSelected} = timer;
+    if (!stopSelected) {
+        timer.stopSelected = true;
+        timer.minutes = (timer.breakGoing) ? timer.selectedBreakMinutes : timer.selectedSessionMinutes;
+        timer.seconds = 0;
+        timerDisplay.textContent = `${timer.minutes}:00`;
+    }
+
+    console.log(timer.stopSelected);
 }
 
 function handleTime() {
@@ -72,9 +123,23 @@ function displayTime() {
 }
 
 function count() {
-    setInterval(function () {
-        if ((timer.minutes == 0 && timer.seconds == 0) ||
-        timer.pauseSelected == true) return;   
-        displayTime();
-    }, 1000);
+    let countdown = setInterval(function () {
+        if (timer.pauseSelected == true || timer.stopSelected == true) {
+            clearInterval(countdown);
+        } else if (timer.minutes == 0 && timer.seconds == 0) {
+            clearInterval(countdown);
+            if (timer.breakGoing) {
+                timer.breakGoing = false;
+                timer.sessionFinished = false;
+                timer.minutes = timer.selectedSessionMinutes;
+                timerDisplay.textContent = `${timer.selectedSessionMinutes}:00`;
+            } else {
+                timer.sessionFinished = true;
+                timer.minutes = timer.selectedBreakMinutes;
+                timerDisplay.textContent = `${timer.selectedBreakMinutes}:00`;
+            }
+        } else {
+            displayTime();
+        }
+    }, 10);
 }
