@@ -5,32 +5,34 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title> Pomodoro clock </title>
         <link href="style.css" type="text/css" rel="stylesheet"/>
-        <script defer src="main.js"></script>
     </head>
     <body>
         <h1>Pomodoro Clock</h1>
         <div id = "display">
-            <h2>Select your settings: </h2>
+            <div class="settings-title"><h2>Select your settings: </h2></div>
             <div id = "settings">
             <div class ="selectTitle">Session time:</div> 
             <select id ="sessionTime" class = "timeselect">
-                <option onclick = "sessionTime()" value="25"> 25:00 </option>
-                <option onclick = "sessionTime()" value="45"> 45:00 </option>
-                <option onclick = "sessionTime()" value="60"> 60:00 </option>
+                <option  value="25"> 25:00 </option>
+                <option  value="45"> 45:00 </option>
+                <option  value="60"> 60:00 </option>
             </select>
             <div class = "selectTitle" style="grid-column: 2/3;grid-row: 1/1;">Break time:</div>
             <select id="breakTime"  class = "timeselect">
+                <option onclick="brkTime()" value="1">1:00</option>
                 <option onclick="brkTime()" value="5">5:00</option>
                 <option onclick="brkTime()" value="10">10:00</option>
                 <option onclick="brkTime()" value="15">15:00</option>
             </select>
             </div>
             <div id = "buttons">
-            <button id="button" class="startTimer" onclick="count()">Start</button>
+            <button id="button" class="startTimer">Start</button>
             <button id="button" class = "pause">Pause</button>
             <button id="button" class = "stop">Stop</button>
             </div>
-            <div id="timer">10:00</div>
+            <div class="timer-container">
+            <div id="timer"></div>
             </div>
+        <script defer src="main.js"></script>
     </body>
 </main>
