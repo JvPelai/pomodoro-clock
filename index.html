@@ -13,13 +13,14 @@
             <div id = "settings">
             <div class ="selectTitle">Session time:</div> 
             <select id ="sessionTime" class = "timeselect">
-                <option onclick = "sessionTime()" value="25"> 25:00 </option>
-                <option onclick = "sessionTime()" value="2"> 2:00 </option>
-                <option onclick = "sessionTime()" value="60"> 60:00 </option>
+                <option  value="25"> 25:00 </option>
+                <option  value="45"> 45:00 </option>
+                <option  value="60"> 60:00 </option>
             </select>
             <div class = "selectTitle" style="grid-column: 2/3;grid-row: 1/1;">Break time:</div>
             <select id="breakTime"  class = "timeselect">
                 <option onclick="brkTime()" value="1">1:00</option>
+                <option onclick="brkTime()" value="5">5:00</option>
                 <option onclick="brkTime()" value="10">10:00</option>
                 <option onclick="brkTime()" value="15">15:00</option>
             </select>
@@ -30,7 +31,7 @@
             <button id="button" class = "stop">Stop</button>
             </div>
             <div class="timer-container">
-            <div id="timer">25:00</div>
+            <div id="timer"></div>
             </div>
         <script defer src="main.js"></script>
     </body>
