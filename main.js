@@ -3,11 +3,12 @@ const pauseTimer = document.querySelector('.pause');
 const startTimer = document.querySelector('.startTimer');
 const stopTimer = document.querySelector('.stop');
 let timeOptions = document.querySelectorAll("#sessionTime");
+timerDisplay.textContent = (sessionTime.options[sessionTime.selectedIndex].value)+":00"
 
-const timer =  {
-    selectedSessionMinutes: 25,
-    selectedBreakMinutes: 5,
-    minutes: 25,
+let timer =  {
+    selectedSessionMinutes: sessionTime.options[sessionTime.selectedIndex].value,
+    selectedBreakMinutes: breakTime.options[breakTime.selectedIndex].value,
+    minutes: sessionTime.options[sessionTime.selectedIndex].value,
     seconds: 0,
     pauseSelected: false,
     stopSelected: false,
@@ -16,12 +17,13 @@ const timer =  {
     breakGoing: false,
 }
 
-
 //gets the session time selected value
 function seshTime(){
     let sessionTime = document.getElementById("sessionTime");
     let time = sessionTime.options[sessionTime.selectedIndex].value;
     timeOptions = document.querySelectorAll("#sessionTime");
+    timer.minutes = time;
+    timer.seconds = 0;
     timerDisplay.textContent = time+":00";
     return time;
 }
@@ -30,7 +32,6 @@ function seshTime(){
 for(timeOption of timeOptions){
     timeOption.addEventListener('click',() => {
         let time = seshTime();
-        timer.minutes = time;
         timer.selectedSessionMinutes = time;
     });
 }
@@ -41,7 +42,6 @@ function brkTime(){
     let brk = breakTime.options[breakTime.selectedIndex].value;
     breakTimeOptions = document.querySelectorAll("#breakTime");
     return brk
-
 }
 
 let breakTimeOptions = document.querySelectorAll("#breakTime");
@@ -53,11 +53,17 @@ for(timeOption of breakTimeOptions){
     });
 }
 
+
 startTimer.addEventListener('click', () => handleStart());
 pauseTimer.addEventListener('click', (e) => handlePause(e));
 stopTimer.addEventListener('click', () => handleStop());
 
+
 function handleStart() {
+    startTimer.disabled = true;
+    for(timeOption of timeOptions){
+        timeOption.disabled = true;
+    }
     if(!timer.stopSelected){
         count();
     } else {
@@ -72,7 +78,7 @@ function handleStart() {
     }
     
     timer.sessionGoing = true;
-
+    
 
 }
 
@@ -96,6 +102,10 @@ function handleStop() {
         timer.minutes = (timer.breakGoing) ? timer.selectedBreakMinutes : timer.selectedSessionMinutes;
         timer.seconds = 0;
         timerDisplay.textContent = `${timer.minutes}:00`;
+    }
+    startTimer.disabled = false;
+    for(timeOption of timeOptions){
+        timeOption.disabled = false;
     }
 
     console.log(timer.stopSelected);
@@ -133,13 +143,16 @@ function count() {
                 timer.sessionFinished = false;
                 timer.minutes = timer.selectedSessionMinutes;
                 timerDisplay.textContent = `${timer.selectedSessionMinutes}:00`;
+                handleStart();
             } else {
+                timer.breakGoing = true;
                 timer.sessionFinished = true;
                 timer.minutes = timer.selectedBreakMinutes;
                 timerDisplay.textContent = `${timer.selectedBreakMinutes}:00`;
+                handleStart();
             }
         } else {
             displayTime();
         }
-    }, 10);
+    }, 1000);
 }
